@@ -48,12 +48,12 @@ for date in diter:
         if pct < 5.0:
             newev["state"] = "out"
         elif lastev.get("state", "out") == "out":
-            newev["state"] = "in"
+            newev["state"] = "in_init"
         else:
             if pct >= 0:
-                newev["state"] = "up"
+                newev["state"] = "in_up"
             else:
-                newev["state"] = "down"
+                newev["state"] = "in_down"
         evlist.append(newev)
     #print (evlist)
     prevmon = pd.DataFrame(evlist)

@@ -20,14 +20,13 @@ returns_wide <- readr::read_csv(file.path(indir, "returns.csv"))
 returns_long <- returns_wide %>%
   gather(key, return, -c(date, gempermid)) %>%
   separate(key, c("dir", "months"), "_")
-
-
+returns_long$months <- as.factor(as.numeric(returns_long$months))
 
 mngr_names <- colnames(select(states, -end_date, -gempermid))
 glimpse(states)
-i <- 1
+i <- 5
 mngr_name <- mngr_names[i]
-state <- "in"
+state <- "up"
 mngr = states[, c("gempermid", mngr_name, "end_date")]
 temp <- filter(mngr, grepl(state, UQ(as.name(mngr_name))) )
 nrow(temp)
@@ -37,32 +36,20 @@ combo <- merge(temp, returns_long, by.x=c("date", "gempermid"),
                by.y=c("date", "gempermid"))
 nrow(combo)
 ggplot(combo) + geom_boxplot(aes(x=dir, y=return )) + 
-  facet_wrap(~months) + ggtitle(name, subtitle=state) +
- ylim(c(-1, 1)) 
-
-combo[combo$months == "12mo",]
+  facet_wrap(~months, labeller="label_both") + ggtitle(mngr_name, subtitle=state) +
+  coord_cartesian(ylim = c(-.5, .5)) 
 
 
-
-mngrs <- events %>% group_by(name) %>%
-  summarise(cnt = n(),
-            cnt_coms = n_distinct(comname),
-            min_dt = min(holddate),
-            max_dt = max(holddate),
-            sum_sharesadj = sum(shareshldadj)) %>%
-  arrange(cnt_coms)  
-
-
-
-nrow(mngrs)
-head(mngrs)
-tail(mngrs)
-nrow(coms)
+combo %>% group_by(months,dir) %>%
+  summarise(mn=mean(return, na.rm=TRUE),
+            p25=quantile(return, probs=0.25),   
+            p45=quantile(return, probs=0.45),             
+            md = median(return, na.rm=TRUE), 
+            p55=quantile(return, probs=0.55),             
+            p75=quantile(return, probs=0.75), 
+            se=sd(return, na.rm=TRUE)/sqrt(n()),
+            sd=sd(return, na.rm=TRUE),
+            n=n()) %>%
+  arrange(months, )
 
 
-mngr <- filter(events, grepl("Ichi",name))
-glimpse(mngr)
-ggplot(mngr, aes(x=holddate, y=pctshouthld, col=comname)) + geom_line() + geom_point()
-
-bad <- filter(events, pctshouthld < 5)
-bad
