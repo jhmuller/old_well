@@ -20,7 +20,7 @@ def main():
     for date in diter:
         print(date)
         datedf = pd.DataFrame()
-        for nmonths in [1, 3, 6, 9, 12, 15]:
+        for nmonths in [3, 6, 12, 16]:
             fwd_month = utils.add_months(date, n=nmonths)
             next_ser = utils.gross_period_returns(df=prices,
                                                   id_col="gempermid",
@@ -38,8 +38,8 @@ def main():
             print("N= %d back= %s, Fwd= %s" % (nmonths, str(back_month), str(fwd_month)))
             df = pd.merge(back_ser.to_frame(), next_ser.to_frame(), left_index=True, right_index=True, how="outer")
             df.columns = ["back_%d" % (nmonths,), "fwd_%d" % (nmonths,)]
-            df["backmo_%s" %(back_month,)] = back_month
-            df["fwdmo_%s" % (fwd_month,)] = fwd_month
+            #df["backmo_%s" %(back_month,)] = back_month
+            #df["fwdmo_%s" % (fwd_month,)] = fwd_month
             datedf = (df if (datedf.shape[0] == 0)
                       else pd.merge(datedf, df, how="outer", left_index=True, right_index=True))
         datedf["date"] = date

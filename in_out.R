@@ -50,6 +50,6 @@ combo %>% group_by(months,dir) %>%
             se=sd(return, na.rm=TRUE)/sqrt(n()),
             sd=sd(return, na.rm=TRUE),
             n=n()) %>%
-  arrange(months, )
+  arrange(months)
 
 

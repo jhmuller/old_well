@@ -10,11 +10,8 @@
 library(shiny)
 library(readr)
 library(DT)
+library(dplyr)
 
-states <- readr::read_csv(file.path(indir, "states.csv"))
-colnames(states)[1] = "gempermid"
-colnames(states) <-  gsub(" ", "_", colnames(states))
-mngr_names <- colnames(select(states, -end_date, -gempermid))
 
 
 # Define UI for application that draws a histogram
@@ -28,8 +25,8 @@ shinyUI(fluidPage(
     sidebarPanel(
       uiOutput("managerSelector"),      
       selectInput("eventSelector", "Event",
-                  choices=c("in_init", "up", "down", "out",
-                            "in|up", "down|out"))
+                  choices=c("in_init", "up", "down", "out_init",
+                            "in_init|up", "down|out_init"))
     #textInput("stateRegex", "State" , value = "in_init", )
     ),
     # Show a plot of the generated distribution
