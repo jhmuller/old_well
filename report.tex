@@ -1,0 +1,35 @@
+\documentclass{article}
+%\usepackage{graphicx}
+%\usepackage{spverbatim}
+\usepackage{tex4ht}
+\usepackage{amsmath}
+%\usepackage{algorithm}
+%\usepackage[noend]{algpseudocode}
+
+
+\begin{document}
+%\author{John H. Muller}
+%\section*{Introduction and Overview}
+This document gives a 
+brief summary of the analysis 
+of the data on large positions in Japanese securities for 5 asset managers.
+  
+While the end goal of our work is a realistic trading strategy, this analysis focused on the question of whether there is information in the trades or holdings of these asset managers.  To answer that question we can imagine creating \emph{signals} from the data.  While many signals could be created we focused on the following:
+\begin{itemize}
+\item Entering into a position of over 5%
+\item Increasing an already large holdings (i.e. already over 5%)
+\item Decreasing an already large holdings (i.e. already over 5%)
+\item Exiting the large position, i.e. lowering holdings to less than 5%
+\end{itemize}
+
+In evaluating these signals we would like to know if the subsequent returns of the security outperformed some benchmark. We might be interested in comparing to a number of benchmarks of interest to investors including:
+\begin{itemize}
+\item a passive index, e.g. Nikkei,
+\item short term treasuries,
+\item a basket of peer securities,
+\item past performance of the same security over the same timeframe.
+\end{itemize}
+
+I choose the last since it was the most readily available in the data set.
+
+\end{document}
